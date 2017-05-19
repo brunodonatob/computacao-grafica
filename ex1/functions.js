@@ -5,7 +5,6 @@ var objeto;
 init();
 render();
 
-
 function init() {
   //container
   container = document.createElement('div');
@@ -14,7 +13,6 @@ function init() {
   //camera
   camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 2000);
   camera.position.set(0,40,50);
-
 
   //scene
   scene = new THREE.Scene();
@@ -63,23 +61,11 @@ function init() {
     });
   });
 
-  //obj file
-  /*var loader = new THREE.OBJLoader();
-  loader.load(
-    //obj file
-    'obj/StevenUniverse.obj',
-    function(object){
-      object.scale.set(25,25,25);
-      scene.add(object);
-      objeto = object;
-    });*/
-
   //camera look at
   camera.lookAt(plane.position);
 
   window.addEventListener('DOMMouseScroll', mousewheel, false);
   window.addEventListener('mousewheel', mousewheel, false);
-
 
 }
 
@@ -90,13 +76,9 @@ function render(){
   //alterando valores dos eixos para executar algum movimento
   //objeto.rotation.z += 0.01;
   objeto.rotation.y += 0.01;
-  //objeto.rotation.x += 0.001;
+  objeto.rotation.x += 0.001;
 
-  //executando recursivamente
-  //requestAnimationFrame(render);
   }
-
-//render();
 
 function mousewheel(event) {
     var fovMAX = 160;
