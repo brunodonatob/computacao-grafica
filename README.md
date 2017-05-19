@@ -3,7 +3,9 @@
   UNIVERSIDADE FEDERAL DE SÃO CARLOS
   
   Bruno Donato Banhos
-  Carla Gama Simões
+  
+  Carla Gama
+  
   Lucas Yoshimura
 
 Trabalhos da disciplina de Computação Gráfica
