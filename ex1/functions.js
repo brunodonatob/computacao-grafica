@@ -25,7 +25,7 @@ function init() {
   container.appendChild(renderer.domElement);
 
   //plane for the ground
-  var planeGeometry = new THREE.PlaneBufferGeometry(10, 20, 32);
+  var planeGeometry = new THREE.PlaneBufferGeometry(0.001, 0.001, 0.001);
   var planeMaterial = new THREE.MeshBasicMaterial({color: null});
   var plane = new THREE.Mesh(planeGeometry, planeMaterial);
   plane.position.set(0,12,-1);
@@ -64,8 +64,11 @@ function init() {
   //camera look at
   camera.lookAt(plane.position);
 
-  window.addEventListener('DOMMouseScroll', mousewheel, false);
-  window.addEventListener('mousewheel', mousewheel, false);
+  //Orbit control
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.25;
+  controls.enableZoom = true;
 
 }
 
@@ -79,12 +82,3 @@ function render(){
   //objeto.rotation.x += 0.001;
 
   }
-
-function mousewheel(event) {
-    var fovMAX = 160;
-    var fovMIN = 1;
-
-    camera.fov -= event.wheelDeltaY * 0.02;
-    camera.fov = Math.max( Math.min( camera.fov, fovMAX ), fovMIN );
-    camera.updateProjectionMatrix();
-}
