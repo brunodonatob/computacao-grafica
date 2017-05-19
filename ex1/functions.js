@@ -28,7 +28,7 @@ function init() {
   var planeGeometry = new THREE.PlaneBufferGeometry(10, 20, 32);
   var planeMaterial = new THREE.MeshBasicMaterial({color: null});
   var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-  plane.position.set(0,0,-1);
+  plane.position.set(0,12,-1);
   scene.add(plane);
 
   //ambient light
@@ -76,7 +76,7 @@ function render(){
   //alterando valores dos eixos para executar algum movimento
   //objeto.rotation.z += 0.01;
   objeto.rotation.y += 0.01;
-  objeto.rotation.x += 0.001;
+  //objeto.rotation.x += 0.001;
 
   }
 
