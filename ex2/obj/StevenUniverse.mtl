@@ -1,0 +1,14 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl Grandpa_Steven
+Ns 7.843137
+Ka 0.000000 0.000000 0.000000
+Kd 0.482320 0.478800 0.478800
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Grandpa-Steven.png
+map_Ka Grandpa-Steven.png
+map_d Grandpa-Steven.png
