@@ -50,12 +50,12 @@ function init() {
   //mtl = textura e cor
   var mtlLoader = new THREE.MTLLoader();
   mtlLoader.setPath('obj/');
-  mtlLoader.load('StevenUniverse.mtl', function(materials) {
+  mtlLoader.load('cosmo.mtl', function(materials) {
     materials.preload();
     var objLoader = new THREE.OBJLoader();
     objLoader.setMaterials(materials);
     objLoader.setPath('obj/');
-    objLoader.load('StevenUniverse.obj', function(object) {
+    objLoader.load('cosmo.obj', function(object) {
       object.scale.set(25,25,25);
       object.position.set(20, 5, -5);
       scene.add(object);
@@ -66,13 +66,14 @@ function init() {
   //mtl = textura e cor
   var mtlLoader2 = new THREE.MTLLoader();
   mtlLoader.setPath('obj/');
-  mtlLoader.load('StevenUniverse.mtl', function(materials) {
+  mtlLoader.load('wanda.mtl', function(materials) {
     materials.preload();
     var objLoader2 = new THREE.OBJLoader();
     objLoader2.setMaterials(materials);
     objLoader2.setPath('obj/');
-    objLoader2.load('StevenUniverse.obj', function(object) {
+    objLoader2.load('wanda.obj', function(object) {
       object.scale.set(25,25,25);
+      object.position.set(-20, 5, -5);
       scene.add(object);
       objeto2 = object;
     });
