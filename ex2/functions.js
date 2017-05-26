@@ -22,7 +22,7 @@ function init() {
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor( 0x000000 );
+  renderer.setClearColor( 0x2952A3 );
   container.appendChild(renderer.domElement);
 
   //plane for the ground
@@ -87,4 +87,6 @@ function render(){
   requestAnimationFrame(render);
   renderer.render(scene, camera);
 
+  objeto.rotation.y -= 0.01;
+  objeto2.rotation.y += 0.01;
 }
