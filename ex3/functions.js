@@ -5,6 +5,8 @@ var objeto2;
 var objeto3;
 var objeto4;
 
+var theta = 0, radius = 100;
+
 init();
 render();
 
@@ -110,7 +112,7 @@ function init() {
   });
 
   //camera look at
-  camera.lookAt(plane.position);
+  camera.lookAt(scene.position);
 
 
   // HELPERS
@@ -128,5 +130,8 @@ function render(){
   requestAnimationFrame(render);
   renderer.render(scene, camera);
 
-  scene.rotation.y += 0.01;
+ theta += 1;
+ camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
+ camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
+ camera.lookAt( scene.position );
 }
