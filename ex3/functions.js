@@ -26,7 +26,7 @@ function init() {
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor( 0x2952A3 );
+  renderer.setClearColor( 0xB2B5BB );
   container.appendChild(renderer.domElement);
 
   //plane for the ground
@@ -54,13 +54,13 @@ function init() {
   //mtl = textura e cor
   var mtlLoaderObjeto1 = new THREE.MTLLoader();
   mtlLoaderObjeto1.setPath('obj/');
-  mtlLoaderObjeto1.load('wanda.mtl', function(materials) {
+  mtlLoaderObjeto1.load('barry.mtl', function(materials) {
     materials.preload();
     var objeto1 = new THREE.OBJLoader();
     objeto1.setMaterials(materials);
     objeto1.setPath('obj/');
-    objeto1.load('wanda.obj', function(object) {
-      object.scale.set(25,25,25);
+    objeto1.load('barry.obj', function(object) {
+      object.scale.set(17,17,17);
       object.position.set(-20, 0, 15);
       scene.add(object);
     });
@@ -69,13 +69,13 @@ function init() {
   //mtl = textura e cor
   var mtlLoaderObjeto2 = new THREE.MTLLoader();
   mtlLoaderObjeto2.setPath('obj/');
-  mtlLoaderObjeto2.load('cosmo.mtl', function(materials) {
+  mtlLoaderObjeto2.load('man.mtl', function(materials) {
     materials.preload();
     var objeto2 = new THREE.OBJLoader();
     objeto2.setMaterials(materials);
     objeto2.setPath('obj/');
-    objeto2.load('cosmo.obj', function(object) {
-      object.scale.set(25,25,25);
+    objeto2.load('man.obj', function(object) {
+      object.scale.set(16,16,16);
       object.position.set(0, 0, 10);
       scene.add(object);
     });
@@ -84,13 +84,13 @@ function init() {
   //mtl = textura e cor
   var mtlLoaderObjeto3 = new THREE.MTLLoader();
   mtlLoaderObjeto3.setPath('obj/');
-  mtlLoaderObjeto3.load('wanda.mtl', function(materials) {
+  mtlLoaderObjeto3.load('batima.mtl', function(materials) {
     materials.preload();
     var objeto3 = new THREE.OBJLoader();
     objeto3.setMaterials(materials);
     objeto3.setPath('obj/');
-    objeto3.load('wanda.obj', function(object) {
-      object.scale.set(25,25,25);
+    objeto3.load('batima.obj', function(object) {
+      object.scale.set(17,17,17);
       object.position.set(10, 0, -15);
       scene.add(object);
     });
@@ -99,13 +99,13 @@ function init() {
   //mtl = textura e cor
   var mtlLoaderObjeto4 = new THREE.MTLLoader();
   mtlLoaderObjeto4.setPath('obj/');
-  mtlLoaderObjeto4.load('cosmo.mtl', function(materials) {
+  mtlLoaderObjeto4.load('diana.mtl', function(materials) {
     materials.preload();
     var objeto4 = new THREE.OBJLoader();
     objeto4.setMaterials(materials);
     objeto4.setPath('obj/');
-    objeto4.load('cosmo.obj', function(object) {
-      object.scale.set(25,25,25);
+    objeto4.load('diana.obj', function(object) {
+      object.scale.set(17,17,17);
       object.position.set(30, 0, -20);
       scene.add(object);
     });
