@@ -16,7 +16,7 @@ function init() {
   document.body.appendChild(container);
 
   //camera
-  camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2000);
+  camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 2000);
   camera.position.set(25, 15, 55);
 
   //scene
@@ -33,7 +33,7 @@ function init() {
   var planeGeometry = new THREE.PlaneBufferGeometry(0.001, 0.001, 0.001);
   var planeMaterial = new THREE.MeshBasicMaterial();
   var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-  plane.position.set(0, 10, 0);
+  plane.position.set(0, 0, 0);
   scene.add(plane);
 
   //ambient light
@@ -128,9 +128,9 @@ function init() {
 function render(){
   requestAnimationFrame(render);
   renderer.render(scene, camera);
-
- theta += 1;
- camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
- camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
- camera.lookAt( scene.position );
+ 
+  theta += 1;
+  camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
+  camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
+  camera.lookAt( scene.position );
 }
