@@ -5,7 +5,7 @@ var objeto2;
 var objeto3;
 var objeto4;
 
-var theta = 0, radius = 100;
+var theta = 0, radius = 70;
 
 init();
 render();
@@ -26,7 +26,7 @@ function init() {
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor( 0xB2B5BB );
+  renderer.setClearColor( 0x222222 );
   container.appendChild(renderer.domElement);
 
   //plane for the ground
@@ -113,7 +113,7 @@ function init() {
   //camera look at
   camera.lookAt(scene.position);
 
-  //cria a curva
+  // cria a curva Batman
   var curve2 = new THREE.CubicBezierCurve3(
   	new THREE.Vector3( 5, 15, -5 ),
   	new THREE.Vector3( -10, 15, -50 ),
@@ -124,16 +124,17 @@ function init() {
   var geometry2 = new THREE.Geometry();
   geometry2.vertices = curve2.getPoints( 50 );
 
-  var material = new THREE.LineBasicMaterial( { color : 0x000000 } );
+  var material = new THREE.LineBasicMaterial( { color : 0xFFE51E, linewidth: 3 } );
 
   // Create the final object to add to the scene
   var curveObject2 = new THREE.Line( geometry2, material );
   scene.add(curveObject2);
 
+  // cria a curva Flash
   var curve = new THREE.CubicBezierCurve3(
-  	new THREE.Vector3( -40, 10, 5 ),
-  	new THREE.Vector3( -5, 15, 50 ),
-  	new THREE.Vector3( 10, 15, 0 ),
+  	new THREE.Vector3( -35, 10, 10 ),
+  	new THREE.Vector3( -30, 12, 40 ),
+    new THREE.Vector3( 30, 15, 50 ),
   	new THREE.Vector3( 5, 15, -5 )
   );
 
@@ -162,7 +163,8 @@ function render(){
   renderer.render(scene, camera);
 
   theta += 1;
+  camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
   camera.position.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
-  //camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
+  camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
   camera.lookAt( scene.position );
 }
