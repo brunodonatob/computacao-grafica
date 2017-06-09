@@ -114,17 +114,33 @@ function init() {
   camera.lookAt(scene.position);
 
   //cria a curva
+  var curve2 = new THREE.CubicBezierCurve3(
+  	new THREE.Vector3( 5, 15, -5 ),
+  	new THREE.Vector3( -10, 15, -50 ),
+  	new THREE.Vector3( 50, 12, -40 ),
+  	new THREE.Vector3( 35, 14, -10 )
+  );
+
+  var geometry2 = new THREE.Geometry();
+  geometry2.vertices = curve2.getPoints( 50 );
+
+  var material = new THREE.LineBasicMaterial( { color : 0x000000 } );
+
+  // Create the final object to add to the scene
+  var curveObject2 = new THREE.Line( geometry2, material );
+  scene.add(curveObject2);
+
   var curve = new THREE.CubicBezierCurve3(
-  	new THREE.Vector3( -10, 0, 0 ),
-  	new THREE.Vector3( -5, 15, 0 ),
-  	new THREE.Vector3( 20, 15, 0 ),
-  	new THREE.Vector3( 10, 0, 0 )
+  	new THREE.Vector3( -40, 10, 5 ),
+  	new THREE.Vector3( -5, 15, 50 ),
+  	new THREE.Vector3( 10, 15, 0 ),
+  	new THREE.Vector3( 5, 15, -5 )
   );
 
   var geometry = new THREE.Geometry();
   geometry.vertices = curve.getPoints( 50 );
 
-  var material = new THREE.LineBasicMaterial( { color : 0x000000 } );
+  //var material = new THREE.LineBasicMaterial( { color : 0x000000 } );
 
   // Create the final object to add to the scene
   var curveObject = new THREE.Line( geometry, material );
@@ -146,7 +162,7 @@ function render(){
   renderer.render(scene, camera);
 
   theta += 1;
-  camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
-  camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
+  camera.position.y = radius * Math.sin( THREE.Math.degToRad( theta ) );
+  //camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
   camera.lookAt( scene.position );
 }
