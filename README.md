@@ -42,4 +42,4 @@ Textura no chão.
 A cena será escura. Haverá iluminação na direção em que o personagem principal olha.
 Posições de câmera: Terceira pessoa e primeira pessoa.
 Interação pelo teclado para controlar o personagem principal.
-Objeto articulado: o personagem principal.
+Objeto articulado: o personagem principal. 
