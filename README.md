@@ -33,13 +33,13 @@ Duas curvas de Bezier adicionadas que juntas envolvem os objetos na cena.
 Jogo “Encontre o objeto”
 O objetivo do jogo é capturar todos os objetos que aparecem na cena dentro do tempo. Podem aparecer elementos surpresa no campo que quando capturados adicionam mais pontos.
 
-Objetos carregados de arquivos: personagem e objeto a ser pego
-Forma simples: plano do chão.
-Cinco objetos no total: personagem, objeto a ser pego, chão, lanterna e elemento surpresa.
-Curva de bezier: objeto a ser encontrado ficará se movendo no movimento da curva.
-Textura será carregada no personagem
-Textura no chão.
-A cena será escura. Haverá iluminação na direção em que o personagem principal olha.
-Posições de câmera: Terceira pessoa e primeira pessoa.
-Interação pelo teclado para controlar o personagem principal.
-Objeto articulado: o personagem principal. 
+* Objetos carregados de arquivos: personagem e objeto a ser pego
+* Forma simples: plano do chão.
+* Cinco objetos no total: personagem, objeto a ser pego, chão, lanterna e elemento surpresa.
+* Curva de bezier: objeto a ser encontrado ficará se movendo no movimento da curva.
+* Textura será carregada no personagem
+* Textura no chão.
+* A cena será escura. Haverá iluminação na direção em que o personagem principal olha.
+* Posições de câmera: Terceira pessoa e primeira pessoa.
+* Interação pelo teclado para controlar o personagem principal.
+* Objeto articulado: o personagem principal. 
