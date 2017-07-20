@@ -2,15 +2,22 @@ var scene, camera, renderer, mesh;
 var meshFloor, ambientLight, light, personagem;
 var angle = 0;
 var position = 0;
+
 // direction vector for movement
 var direction = new THREE.Vector3(1, 0, 0);
 var up = new THREE.Vector3(0, 0, 1);
 var axis = new THREE.Vector3();
+
 // scalar to simulate speed
 var speed = 100;
 
+// animation
+var mixer, animationClip;
+var clock = new THREE.Clock();
+var stats = new Stats();
+
+
 init();
-animate();
 
 function init(){
     //cena e camera
@@ -49,45 +56,10 @@ function init(){
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    //personagem
-    var mtlLoader = new THREE.MTLLoader();
-    mtlLoader.setPath('obj/');
-    mtlLoader.load('charmander.mtl', function(materials) {
-        materials.preload();
-        var objLoader = new THREE.OBJLoader();
-        objLoader.setMaterials(materials);
-        objLoader.setPath('obj/');
-        objLoader.load('charmander.obj', function(object) {
-          object.scale.set(0.3,0.3,0.3);
-          object.position.set(10,0,-5);
-          scene.add(object);
-          personagem = object;
-        });
-    });
-    // ------------- OBJETO A SER PEGO ------------------
-    // material
-    var material = new THREE.MeshPhongMaterial({
-      color: 0x228B22,
-      shading: THREE.FlatShading
-    });
-    // geometry
-    var geometry = new THREE.SphereGeometry(0.5, 50, 50, 0, Math.PI * 2, 0, Math.PI * 2);
-    // mesh
-    mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-    //--------------- CAMINHO EM UM CURVA DE BEZIER QUE O OBJETO SE MOVIMENTA ----------
-    // the path
-    path = new THREE.CubicBezierCurve3(
-        new THREE.Vector3( 0, 0, 0 ),
-      	new THREE.Vector3( 7, 1, -7 ),
-      	new THREE.Vector3( -7, 1, 7 ),
-      	new THREE.Vector3( 0, 0, 0 )
-    );
-    drawPath();
-    // Start angle and point
-    previousAngle = getAngle( position );
-    previousPoint = path.getPointAt( position );
-    //-------------------- FIM DO OBJETO A SER PEGO--------------------------
+    loader = new THREE.JSONLoader();
+    loader.load('obj/Charmander.json', addModel);
+    
+    putObject();
 
     //Orbit control
     //controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -115,19 +87,92 @@ function init(){
     }
 }
 
+function addModel(geometry, materials){
+  materials.forEach(function (mat){
+    mat.skinning = true;});
+
+  personagem = new THREE.SkinnedMesh(geometry, materials);
+
+  scene.add(personagem);
+
+  mixer = new THREE.AnimationMixer( personagem );
+  mixer.clipAction('Idle').play();
+  mixer.timeScale = 35;
+
+  animate();
+} 
+
 // render
 function render() {
   renderer.render(scene, camera);
+
+  move();
+
+  if(personagem.position.x > mesh.position.x - 0.5 && 
+      personagem.position.x < mesh.position.x + 0.5 &&
+      personagem.position.z > mesh.position.z - 0.5 &&
+      personagem.position.z < mesh.position.z + 0.5) {
+    removeEntity(mesh);
+    putObject();
+  }
 }
 
 // animate
 function animate() {
-  move();
   requestAnimationFrame(animate);
+  mixer.update( clock.getDelta() );
+  stats.update();
   render();
 }
 
 // ---------------------------- funcoes para fazer o objeto a ser pego ---------
+function putObject() {
+  // ------------- OBJETO A SER PEGO ------------------
+  // material
+  var material = new THREE.MeshPhongMaterial({
+    color: 0x228B22,
+    shading: THREE.FlatShading
+  });
+  // geometry
+  var geometry = new THREE.SphereGeometry(0.5, 50, 50, 0, Math.PI * 2, 0, Math.PI * 2);
+  // mesh
+  mesh = new THREE.Mesh(geometry, material);
+  mesh.name = "bola";
+  scene.add(mesh);
+
+  var randomSignal;
+  if(Math.random() * 10 > 5)
+    randomSignal = 1;
+  else
+    randomSignal = -1;
+
+  //mesh.position.set(Math.random() * 10 * randomSignal, 0, Math.random() * 10 * randomSignal);
+  //--------------- CAMINHO EM UM CURVA DE BEZIER QUE O OBJETO SE MOVIMENTA ----------
+  // the path
+  /*path = new THREE.CubicBezierCurve3(
+      new THREE.Vector3( 0, 0, 0 ),
+      new THREE.Vector3( 7, 1, -7 ),
+      new THREE.Vector3( -7, 1, 7 ),
+      new THREE.Vector3( 0, 0, 0 )
+  );*/
+
+  var a = Math.random() * 10 * randomSignal;
+  var b = Math.random() * 10 * randomSignal;
+
+  path = new THREE.CubicBezierCurve3(
+      new THREE.Vector3(b, 0, b),
+      new THREE.Vector3(a, 1, a * -1),
+      new THREE.Vector3(a * -1, 1, a),
+      new THREE.Vector3(b, 0, b)
+  );
+
+  drawPath();
+  // Start angle and point
+  previousAngle = getAngle( position );
+  previousPoint = path.getPointAt( position );
+  //-------------------- FIM DO OBJETO A SER PEGO--------------------------
+}
+
 function drawPath() {
   var vertices = path.getSpacedPoints(5);
 
@@ -148,6 +193,10 @@ function drawPath() {
 function move() {
   // add up to position for movement
   position += 0.005;
+
+  if(position > 1)
+    position = 0;
+
   // get the point at position
   var point = path.getPointAt(position);
   mesh.position.x = point.x;
@@ -168,3 +217,8 @@ function getAngle( position ){
   return angle;
 }
 // ---------------------- FINAL do trajeto do objeto a ser pego ------------
+
+function removeEntity(object) {
+  var selectedObject = scene.getObjectByName(object.name);
+  scene.remove( selectedObject );
+}
