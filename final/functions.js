@@ -49,21 +49,15 @@ function init(){
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    //personagem
-    var mtlLoader = new THREE.MTLLoader();
-    mtlLoader.setPath('obj/');
-    mtlLoader.load('charmander.mtl', function(materials) {
-        materials.preload();
-        var objLoader = new THREE.OBJLoader();
-        objLoader.setMaterials(materials);
-        objLoader.setPath('obj/');
-        objLoader.load('charmander.obj', function(object) {
-          object.scale.set(0.3,0.3,0.3);
-          object.position.set(10,0,-5);
-          scene.add(object);
-          personagem = object;
-        });
-    });
+
+		loader = new THREE.JSONLoader();
+		loader.load( "obj/Charmander.json", function( geometry ) {
+		    personagem = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial() );
+		    personagem.scale.set( 0.3, 0.3, 0.3 );
+		    personagem.position.set(10,0,-5);
+				scene.add(personagem);
+			});
+
     // ------------- OBJETO A SER PEGO ------------------
     // material
     var material = new THREE.MeshPhongMaterial({
