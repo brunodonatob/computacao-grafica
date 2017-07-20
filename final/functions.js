@@ -57,25 +57,10 @@ function init(){
     document.body.appendChild(renderer.domElement);
 
     //personagem
-/*    var mtlLoader = new THREE.MTLLoader();
-    mtlLoader.setPath('obj/');
-    mtlLoader.load('charmander.mtl', function(materials) {
-        materials.preload();
-        var objLoader = new THREE.OBJLoader();
-        objLoader.setMaterials(materials);
-        objLoader.setPath('obj/');
-        objLoader.load('charmander.obj', function(object) {
-          object.scale.set(0.3,0.3,0.3);
-          object.position.set(10,0,-5);
-          object.name = "charmander";
-          scene.add(object);
-          personagem = object;
-        });
-    });*/
-
     loader = new THREE.JSONLoader();
     loader.load('obj/Charmander.json', addModel);
     
+    // objeto a ser pego
     putObject();
 
     //Orbit control
@@ -87,21 +72,50 @@ function init(){
 
     //controle do personagem
     document.addEventListener("keydown", Keyboard, false);
+    //document.addEventListener("keyup", Keyboard, true);
     function Keyboard(event){
-        var speedPers = 0.1;
+        var speedPers = 0.2;
         if(event.keyCode == 37) {
-            personagem.position.x += speedPers;
+          mixer.clipAction('Idle').stop();
+          mixer.clipAction('Walk').play();
+          personagem.rotation.y = THREE.Math.degToRad( 90 );
+          personagem.position.x += speedPers;
         }
         else if(event.keyCode == 39) {
+          mixer.clipAction('Idle').stop();
+          mixer.clipAction('Walk').play();
+          personagem.rotation.y = THREE.Math.degToRad( 270 );
             personagem.position.x -= speedPers;
         }
         else if(event.keyCode == 40) {
+          mixer.clipAction('Idle').stop();
+          mixer.clipAction('Walk').play();
+          personagem.rotation.y = THREE.Math.degToRad( 180 );
             personagem.position.z -= speedPers;
         }
         else if(event.keyCode == 38) {
+          mixer.clipAction('Idle').stop();
+          mixer.clipAction('Walk').play();
+          personagem.rotation.y = THREE.Math.degToRad( 0 );
             personagem.position.z += speedPers;
         }
     }
+
+    var down = false;
+    document.addEventListener('keydown', function (){
+        down = true;
+    }, false);
+
+    document.addEventListener('keyup', function (){
+        if(down === true){
+            mixer.clipAction('Idle').play();
+            mixer.clipAction('Walk').stop();
+        }
+        else{
+            alert('Omnibox. Ignore it.');
+        }
+        down = false;
+    }, false);
 }
 
 function addModel(geometry, materials){
@@ -109,6 +123,8 @@ function addModel(geometry, materials){
     mat.skinning = true;});
 
   personagem = new THREE.SkinnedMesh(geometry, materials);
+
+  personagem.scale.set(1/2, 1/2, 1/2);
 
   scene.add(personagem);
 
@@ -136,7 +152,6 @@ function render() {
 
 // animate
 function animate() {
-  //move();
   requestAnimationFrame(animate);
   mixer.update( clock.getDelta() );
   stats.update();
