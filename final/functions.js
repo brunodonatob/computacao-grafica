@@ -1,9 +1,16 @@
-var scene, camera1, camera3, renderer, mesh, lamp, candy;
+var scene, camera1, camera3, renderer, mesh, lamp;
 var meshFloor, ambientLight, light, personagem;
 var angle = 0;
 var position = 0;
 var c = 60; //TIMER DO CONTADOR. Sugerido: 60s
 var pokebolas = 0;
+var candy;
+var mtlLoaderObjeto2;
+var randomSignal1;
+var randomSignal3;
+var randomSignal2;
+var randomSignal4;
+
 
 // direction vector for movement
 var direction = new THREE.Vector3(1, 0, 0);
@@ -29,6 +36,7 @@ init();
 
 function init(){
     //cena e camera
+
 	scene = new THREE.Scene();
 	camera3 = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
   camera3.position.set(0, 12, -10);
@@ -78,19 +86,32 @@ function init(){
     });
 
 		//candy
-		var mtlLoaderObjeto2 = new THREE.MTLLoader();
-  mtlLoaderObjeto2.setPath('obj/candy');
-  mtlLoaderObjeto2.load('Candy.mtl', function(materials) {
-    materials.preload();
+	mtlLoaderObjeto2 = new THREE.MTLLoader();
+  mtlLoaderObjeto2.setPath('obj/candy/');
+  mtlLoaderObjeto2.load('CandyCane.mtl', function(materials) {
+		materials.preload();
     var objeto2 = new THREE.OBJLoader();
     objeto2.setMaterials(materials);
-    objeto2.setPath('obj/');
-    objeto2.load('Candy.obj', function(object) {
-      object.scale.set(2,2,2);
-      object.position.set(0, 0, 10);
-			object.name = "candy";
+    objeto2.setPath('obj/candy/');
+    objeto2.load('CandyCane.obj', function(object) {
+	    object.scale.set(4,4,4);
+			object.rotation.x = 100;
+    	object.name = "candy";
+			if(Math.random() * 10 > 5)
+				randomSignal1 = 1;
+			else
+				randomSignal1 = -1;
+
+			if(Math.random() * 10 > 5)
+				randomSignal3 = 1;
+			else
+				randomSignal3 = -1;
+
+			randomSignal2 = Math.floor(Math.random() * 8) * randomSignal1;
+			randomSignal4 = Math.floor(Math.random() * 8) * randomSignal3;
+			object.position.set(randomSignal4, 0, randomSignal2);
+
 			candy = object;
-			// alert(candy);
     });
   });
 
@@ -110,20 +131,18 @@ function init(){
         object.scale.set(0.4,0.4,0.4);
       object.name = "lamp";
 
-      var randomSignal1;
       if(Math.random() * 10 > 5)
         randomSignal1 = 1;
       else
         randomSignal1 = -1;
 
-      var randomSignal3;
       if(Math.random() * 10 > 5)
         randomSignal3 = 1;
       else
         randomSignal3 = -1;
 
-      var randomSignal2 = Math.floor(Math.random() * 8) * randomSignal1;
-      var randomSignal4 = Math.floor(Math.random() * 8) * randomSignal3;
+      randomSignal2 = Math.floor(Math.random() * 8) * randomSignal1;
+      randomSignal4 = Math.floor(Math.random() * 8) * randomSignal3;
       object.position.set(randomSignal4, 0, randomSignal2);
       lamp = object;
       });
@@ -132,7 +151,7 @@ function init(){
   //lanterna
   setTimeout(function(){ putObject2();}, 15000)
 	//aparecer doce
-	setTimeout(function(){ adicionarElementoSurpresa();}, 45000) //aparece o doce aos 45 segundos
+	setTimeout(function(){ adicionarElementoSurpresa();}, 2000) //aparece o doce aos 45 segundos
 
 
     //Orbit control
@@ -334,16 +353,13 @@ function render() {
         removeEntity(lamp);
         scene.add(ambientLight);
         setTimeout(function(){ removeEntity(ambientLight) }, 5000);
-  }
-
-	if(personagem.position.x > candy.position.x - 0.5 &&
+  }else if(personagem.position.x > candy.position.x - 0.5 &&
       personagem.position.x < candy.position.x + 0.5 &&
       personagem.position.z > candy.position.z - 0.5 &&
       personagem.position.z < candy.position.z + 0.5) {
 				pokebolas = pokebolas + 5;
-
         removeEntity(candy);
-    		alert('removi doce!');
+    		// alert('removi doce!');
   }
 }
 
@@ -393,9 +409,8 @@ function putObject2() {
 }
 
 function adicionarElementoSurpresa() {
-	alert('foi');
-  scene.add(candy);
-}
+	scene.add(candy);
+	}
 function drawPath() {
   var vertices = path.getSpacedPoints(5);
 
