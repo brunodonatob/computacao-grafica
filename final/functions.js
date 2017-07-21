@@ -43,7 +43,7 @@ function init(){
   camera3.lookAt(new THREE.Vector3(0,2,0));
 
   camera1 = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 3, 1000);
-  camera1.position.set(0, 2, 0);
+  camera1.position.set(0, 1.5, 0);
   camera1.lookAt(new THREE.Vector3(0,1,1));
 
     //plano no chao
@@ -173,6 +173,7 @@ function init(){
             cameraMode = 3;
         }
 
+        // CAMERA EM TERCEIRA PESSOA
         if(cameraMode == 3) {
           if(event.keyCode == 37) {
             mixer.clipAction('Idle').stop();
@@ -207,53 +208,33 @@ function init(){
             light.position.z += speedPers;
           }
         }
+        // CAMERA EM PRIMEIRA PESSOA
         else {
           if(event.keyCode == 37) {
             //mixer.clipAction('Idle').stop();
             //mixer.clipAction('Walk').play();
-            personagem.rotation.y += THREE.Math.degToRad( 90 );
-            camera1.rotation.y += THREE.Math.degToRad( 90 );
-            if(xz)
-              xz = false;
-            else
-              xz = true;
+            personagem.position.x += speedPers;
+            camera1.position.x += speedPers;
+            light.position.x += speedPers;
           }
           else if(event.keyCode == 39) {
             //mixer.clipAction('Idle').stop();
             //mixer.clipAction('Walk').play();
-            personagem.rotation.y -= THREE.Math.degToRad( 90 );
-            camera1.rotation.y -= THREE.Math.degToRad( 90 );
-
-            if(xz)
-              xz = false;
-            else
-              xz = true;
+            personagem.position.x -= speedPers;
+            camera1.position.x -= speedPers;
+            light.position.x -= speedPers;
           }
           else if(event.keyCode == 40) {
 
-            if(xz) {
-              camera1.position.x -= speedPers;
-              personagem.position.x -= speedPers;
-			  light.position.x -= speedPers;
-            }
-            else {
-              camera1.position.z -= speedPers;
-              personagem.position.z -= speedPers;
-              light.position.z -= speedPers;
-            }
+            camera1.position.z -= speedPers;
+            personagem.position.z -= speedPers;
+    			  light.position.z -= speedPers;
           }
           else if(event.keyCode == 38) {
 
-            if(xz) {
-              camera1.position.x += speedPers;
-              personagem.position.x += speedPers;
-              light.position.x += speedPers;
-            }
-            else {
-              camera1.position.z += speedPers;
-              personagem.position.z += speedPers;
-              light.position.z += speedPers;
-            }
+            camera1.position.z += speedPers;
+            personagem.position.z += speedPers;
+            light.position.z += speedPers;
           }
         }
 
