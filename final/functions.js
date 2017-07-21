@@ -2,7 +2,7 @@ var scene, camera, renderer, mesh;
 var meshFloor, ambientLight, light, personagem;
 var angle = 0;
 var position = 0;
-var c = 0;
+var c = 5;
 
 // direction vector for movement
 var direction = new THREE.Vector3(1, 0, 0);
@@ -119,14 +119,14 @@ function contador(){
 
 	function timedCount() {
 		var l = 0;
-		if((c-1) == 60){ //1 min para pegar os objetos -- c-1 pra mostrar no contador o tempo correto
+		if(c == 0){ //1 min para pegar os objetos
 			stopCount();
 			alert('O tempo esgotou! Pressione f5 para jogar novamente.');
 			cancelAnimationFrame(id);
 		}else{
 			l = document.getElementById("contador");
+			c--;
 			l.innerHTML = c + " s";
-			c++;
 			t = setTimeout(function(){ timedCount() }, 1000);
 		}
 }
