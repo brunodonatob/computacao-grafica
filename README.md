@@ -54,3 +54,5 @@ Fique atento para os itens:
 * Candy Pokémon: 5 pontos;
 * Fogo (lanterna): 5 segundos na claridade;
 Ao final dos 60 segundo é mostrado a sua pontuação. Para jogar novamente, aperte F5 no seu teclado. Divirta-se!
+
+'Atividade Final.pdf' disponível na pasta raíz com mais detalhes do jogo e seu desenvolvimento.
