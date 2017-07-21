@@ -35,9 +35,9 @@ function init(){
 	ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
 	scene.add(ambientLight);
 
-    //luz
-	light = new THREE.PointLight(0xffffff, 0.8, 18);
-	light.position.set(-3,6,-3);
+	//luz do personagem
+	light = new THREE.PointLight(0xffffff, 2, 10);
+	light.position.set(0, 3, -1);
 	light.castShadow = true;
 	light.shadow.camera.near = 0.1;
 	light.shadow.camera.far = 25;
@@ -55,6 +55,9 @@ function init(){
     loader = new THREE.JSONLoader();
     loader.load('obj/Charmander.json', addModel);
 
+	//lanterna
+
+
     // objeto a ser pego
     putObject();
 
@@ -64,8 +67,7 @@ function init(){
     //controls.dampingFactor = 0.25;
     //controls.enableZoom = true;
 
-
-    //controle do personagem
+	//controle do personagem
     document.addEventListener("keydown", Keyboard, false);
     //document.addEventListener("keyup", Keyboard, true);
     function Keyboard(event){
@@ -75,24 +77,31 @@ function init(){
           mixer.clipAction('Walk').play();
           personagem.rotation.y = THREE.Math.degToRad( 90 );
           personagem.position.x += speedPers;
+          light.position.x += speedPers;
         }
         else if(event.keyCode == 39) {
           mixer.clipAction('Idle').stop();
           mixer.clipAction('Walk').play();
           personagem.rotation.y = THREE.Math.degToRad( 270 );
-            personagem.position.x -= speedPers;
+          personagem.position.x -= speedPers;
+		  light.rotation.y = THREE.Math.degToRad( 270 );
+          light.position.x -= speedPers;
         }
         else if(event.keyCode == 40) {
           mixer.clipAction('Idle').stop();
           mixer.clipAction('Walk').play();
           personagem.rotation.y = THREE.Math.degToRad( 180 );
-            personagem.position.z -= speedPers;
+          personagem.position.z -= speedPers;
+		  light.rotation.y = THREE.Math.degToRad( 180 );
+          light.position.z -= speedPers;
         }
         else if(event.keyCode == 38) {
           mixer.clipAction('Idle').stop();
           mixer.clipAction('Walk').play();
           personagem.rotation.y = THREE.Math.degToRad( 0 );
-            personagem.position.z += speedPers;
+          personagem.position.z += speedPers;
+		  light.rotation.y = THREE.Math.degToRad( 0 );
+          light.position.z += speedPers;
         }
     }
 
@@ -203,9 +212,9 @@ function putObject() {
 
   var randomSignal;
   if(Math.random() * 10 > 5)
-    randomSignal = 1;
+    randomSignal = 2;
   else
-    randomSignal = -1;
+    randomSignal = -2;
 
   //mesh.position.set(Math.random() * 10 * randomSignal, 0, Math.random() * 10 * randomSignal);
   //--------------- CAMINHO EM UM CURVA DE BEZIER QUE O OBJETO SE MOVIMENTA ----------
