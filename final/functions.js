@@ -42,7 +42,7 @@ function init(){
 		textureFloor();
     //luz ambiente
 	ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-	//scene.add(ambientLight);
+  ambientLight.name = "ambientLight";
 
 	//luz do personagem
 	light = new THREE.PointLight(0xffffff, 2, 10);
@@ -60,12 +60,56 @@ function init(){
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
+    var mtlLoader = new THREE.MTLLoader();
+    mtlLoader.setPath('obj/pkb/');
+    mtlLoader.load('pokeball.mtl', function(materials) {
+      materials.preload();
+      var objLoader = new THREE.OBJLoader();
+      objLoader.setMaterials(materials);
+      objLoader.setPath('obj/pkb/');
+      objLoader.load('pokeball.obj', function(object) {
+        object.scale.set(1/4,1/4,1/4);
+        mesh = object;
+        mesh.name = "bola";
+      });
+    });
+
     //personagem
     loader = new THREE.JSONLoader();
     loader.load('obj/Charmander.json', addModel);
 
+    var mtlLoaderObjeto1 = new THREE.MTLLoader();
+    mtlLoaderObjeto1.setPath('obj/');
+    mtlLoaderObjeto1.load('flame1.mtl', function(materials) {
+      materials.preload();
+      var objeto1 = new THREE.OBJLoader();
+      objeto1.setMaterials(materials);
+      objeto1.setPath('obj/');
+      objeto1.load('flame1.obj', function(object) {
+        object.scale.set(0.4,0.4,0.4);
+      object.name = "lamp";
+
+      var randomSignal1;
+      if(Math.random() * 10 > 5)
+        randomSignal1 = 1;
+      else
+        randomSignal1 = -1;
+
+      var randomSignal3;
+      if(Math.random() * 10 > 5)
+        randomSignal3 = 1;
+      else
+        randomSignal3 = -1;
+
+      var randomSignal2 = Math.floor(Math.random() * 8) * randomSignal1;
+      var randomSignal4 = Math.floor(Math.random() * 8) * randomSignal3;
+      object.position.set(randomSignal4, 0, randomSignal2);
+      lamp = object;
+      });
+    });
+
 	//lanterna
-	putObject2();
+  setTimeout(function(){ putObject2();}, 15000)
 
     // objeto a ser pego
     putObject();
@@ -259,6 +303,7 @@ function render() {
     removeEntity(mesh);
     putObject();
   }
+
   if(personagem.position.x > lamp.position.x - 0.5 &&
       personagem.position.x < lamp.position.x + 0.5 &&
       personagem.position.z > lamp.position.z - 0.5 &&
@@ -285,50 +330,24 @@ function putObject() {
     color: 0x228B22,
     shading: THREE.FlatShading
   });
-  // geometry
-  //var geometry = new THREE.SphereGeometry(0.5, 50, 50, 0, Math.PI * 2, 0, Math.PI * 2);
-  // mesh
-  //mesh = new THREE.Mesh(geometry, material);
-  //mesh.name = "bola";
-  //scene.add(mesh);
-
-  //mtl = textura e cor
-  var mtlLoader = new THREE.MTLLoader();
-  mtlLoader.setPath('obj/pkb/');
-  mtlLoader.load('pokeball.mtl', function(materials) {
-    materials.preload();
-    var objLoader = new THREE.OBJLoader();
-    objLoader.setMaterials(materials);
-    objLoader.setPath('obj/pkb/');
-    objLoader.load('pokeball.obj', function(object) {
-      object.scale.set(1/4,1/4,1/4);
-      scene.add(object);
-      mesh = object;
-      mesh.name = "bola";
-    });
-  });
-
+  
   var randomSignal;
   if(Math.random() * 10 > 5)
     randomSignal = 1;
   else
     randomSignal = -1;
 
-  //mesh.position.set(Math.random() * 10 * randomSignal, 0, Math.random() * 10 * randomSignal);
   //--------------- CAMINHO EM UM CURVA DE BEZIER QUE O OBJETO SE MOVIMENTA ----------
-  // the path
-  /*path = new THREE.CubicBezierCurve3(
-      new THREE.Vector3( 0, 0, 0 ),
-      new THREE.Vector3( 7, 1, -7 ),
-      new THREE.Vector3( -7, 1, 7 ),
-      new THREE.Vector3( 0, 0, 0 )
-  );*/
-
   var a = Math.random() * 10 * randomSignal;
   var b = Math.random() * 10 * randomSignal;
+  
 
+  scene.add(mesh);
+
+  //mesh.position.set(a, 0, b);
+  // the path
   path = new THREE.CubicBezierCurve3(
-      new THREE.Vector3(b, 0, b),
+      new THREE.Vector3(a, 0, b),
       new THREE.Vector3(a, 1, a * -1),
       new THREE.Vector3(a * -1, 1, a),
       new THREE.Vector3(b, 0, b)
@@ -342,24 +361,7 @@ function putObject() {
 }
 
 function putObject2() {
-  var mtlLoaderObjeto1 = new THREE.MTLLoader();
-  mtlLoaderObjeto1.setPath('obj/');
-  mtlLoaderObjeto1.load('flame1.mtl', function(materials) {
-    materials.preload();
-    var objeto1 = new THREE.OBJLoader();
-    objeto1.setMaterials(materials);
-    objeto1.setPath('obj/');
-    objeto1.load('flame1.obj', function(object) {
-      object.scale.set(0.4,0.4,0.4);
-	  object.name = "lamp";
-
-	  var randomSignal2 = Math.floor(Math.random() * 8);
-	  var randomSignal4 = Math.floor(Math.random() * 8);
-	  object.position.set(randomSignal4, 0, randomSignal2);
-	  var lamp = new THREE.SkinnedMesh(object, materials);
-      scene.add(object);
-    });
-  });
+  scene.add(lamp);
 }
 
 function drawPath() {
