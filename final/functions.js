@@ -2,7 +2,7 @@ var scene, camera, renderer, mesh;
 var meshFloor, ambientLight, light, personagem;
 var angle = 0;
 var position = 0;
-var c = 5;
+var c = 60; //TIMER DO CONTADOR
 
 // direction vector for movement
 var direction = new THREE.Vector3(1, 0, 0);
