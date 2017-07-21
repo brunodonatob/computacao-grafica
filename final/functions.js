@@ -2,11 +2,14 @@ var scene, camera1, camera3, renderer, mesh;
 var meshFloor, ambientLight, light, personagem;
 var angle = 0;
 var position = 0;
+var c = 60; //TIMER DO CONTADOR. Sugerido: 60s
+var pokebolas = 0;
 
 // direction vector for movement
 var direction = new THREE.Vector3(1, 0, 0);
 var up = new THREE.Vector3(0, 0, 1);
 var axis = new THREE.Vector3();
+var id;
 
 // scalar to simulate speed
 var speed = 100;
@@ -41,9 +44,9 @@ function init(){
 	ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
 	scene.add(ambientLight);
 
-    //luz
-	light = new THREE.PointLight(0xffffff, 0.8, 18);
-	light.position.set(-3,6,-3);
+	//luz do personagem
+	light = new THREE.PointLight(0xffffff, 2, 10);
+	light.position.set(0, 3, -1);
 	light.castShadow = true;
 	light.shadow.camera.near = 0.1;
 	light.shadow.camera.far = 25;
@@ -61,6 +64,9 @@ function init(){
     loader = new THREE.JSONLoader();
     loader.load('obj/Charmander.json', addModel);
 
+	//lanterna
+
+
     // objeto a ser pego
     putObject();
 
@@ -70,8 +76,7 @@ function init(){
     //controls.dampingFactor = 0.25;
     //controls.enableZoom = true;
 
-
-    //controle do personagem
+	//controle do personagem
     document.addEventListener("keydown", Keyboard, false);
     //document.addEventListener("keyup", Keyboard, true);
     function Keyboard(event) {
@@ -172,6 +177,38 @@ function init(){
         }
         down = false;
     }, false);
+		contador();
+
+}
+
+function contador(){
+	timedCount();
+	var t = 0;
+
+	function timedCount() {
+		var l = 0;
+		if(c == 0){ //1 min para pegar os objetos
+			l = document.getElementById("contador");
+			if(pokebolas > 0 && pokebolas < 5)
+				l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! Treine mais!";
+			else if(pokebolas >= 5 && pokebolas < 10)
+				l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! Showw";
+			else
+				l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! MESTRE POKEMON?!";
+			stopCount();
+			alert('O tempo esgotou! Pressione F5 para jogar novamente.');
+			cancelAnimationFrame(id);
+		}else{
+			l = document.getElementById("contador");
+			l.innerHTML = c + " s";
+			c--;
+			t = setTimeout(function(){ timedCount() }, 1000);
+		}
+}
+
+function stopCount() {
+    clearTimeout(t);
+}
 }
 
 function addModel(geometry, materials){
@@ -205,6 +242,7 @@ function render() {
       personagem.position.x < mesh.position.x + 0.5 &&
       personagem.position.z > mesh.position.z - 0.5 &&
       personagem.position.z < mesh.position.z + 0.5) {
+				pokebolas++;
     removeEntity(mesh);
     putObject();
   }
@@ -212,7 +250,7 @@ function render() {
 
 // animate
 function animate() {
-  requestAnimationFrame(animate);
+  id = requestAnimationFrame(animate);
   mixer.update( clock.getDelta() );
   stats.update();
   render();
@@ -235,9 +273,9 @@ function putObject() {
 
   var randomSignal;
   if(Math.random() * 10 > 5)
-    randomSignal = 1;
+    randomSignal = 2;
   else
-    randomSignal = -1;
+    randomSignal = -2;
 
   //mesh.position.set(Math.random() * 10 * randomSignal, 0, Math.random() * 10 * randomSignal);
   //--------------- CAMINHO EM UM CURVA DE BEZIER QUE O OBJETO SE MOVIMENTA ----------
