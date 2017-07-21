@@ -1,4 +1,4 @@
-var scene, camera1, camera3, renderer, mesh, lamp;
+var scene, camera1, camera3, renderer, mesh, lamp, candy;
 var meshFloor, ambientLight, light, personagem;
 var angle = 0;
 var position = 0;
@@ -77,12 +77,28 @@ function init(){
       });
     });
 
+		//candy
+		var mtlLoaderObjeto2 = new THREE.MTLLoader();
+  mtlLoaderObjeto2.setPath('obj/candy');
+  mtlLoaderObjeto2.load('Candy.mtl', function(materials) {
+    materials.preload();
+    var objeto2 = new THREE.OBJLoader();
+    objeto2.setMaterials(materials);
+    objeto2.setPath('obj/');
+    objeto2.load('Candy.obj', function(object) {
+      object.scale.set(2,2,2);
+      object.position.set(0, 0, 10);
+			object.name = "candy";
+			candy = object;
+			// alert(candy);
+    });
+  });
 
 
     //personagem
     loader = new THREE.JSONLoader();
     loader.load('obj/Charmander.json', addModel);
-
+		//lanterna
     var mtlLoaderObjeto1 = new THREE.MTLLoader();
     mtlLoaderObjeto1.setPath('obj/');
     mtlLoaderObjeto1.load('flame1.mtl', function(materials) {
@@ -115,6 +131,8 @@ function init(){
 
   //lanterna
   setTimeout(function(){ putObject2();}, 15000)
+	//aparecer doce
+	setTimeout(function(){ adicionarElementoSurpresa();}, 45000) //aparece o doce aos 45 segundos
 
 
     //Orbit control
@@ -304,7 +322,7 @@ function render() {
       personagem.position.x < mesh.position.x + 0.5 &&
       personagem.position.z > mesh.position.z - 0.5 &&
       personagem.position.z < mesh.position.z + 0.5) {
-				pokebolas++;
+		pokebolas++;
     removeEntity(mesh);
     putObject();
   }
@@ -316,6 +334,16 @@ function render() {
         removeEntity(lamp);
         scene.add(ambientLight);
         setTimeout(function(){ removeEntity(ambientLight) }, 5000);
+  }
+
+	if(personagem.position.x > candy.position.x - 0.5 &&
+      personagem.position.x < candy.position.x + 0.5 &&
+      personagem.position.z > candy.position.z - 0.5 &&
+      personagem.position.z < candy.position.z + 0.5) {
+				pokebolas = pokebolas + 5;
+
+        removeEntity(candy);
+    		alert('removi doce!');
   }
 }
 
@@ -330,7 +358,7 @@ function animate() {
 // ---------------------------- funcoes para fazer o objeto a ser pego ---------
 function putObject() {
   // ------------- OBJETO A SER PEGO ------------------
-  
+
   var randomSignal;
   if(Math.random() * 10 > 5)
     randomSignal = 1;
@@ -342,7 +370,7 @@ function putObject() {
   var b = Math.random() * 10 * randomSignal;
 
   mesh.position.set(a, 0, b);
-  
+
   scene.add(mesh);
 
   // the path
@@ -364,6 +392,10 @@ function putObject2() {
   scene.add(lamp);
 }
 
+function adicionarElementoSurpresa() {
+	alert('foi');
+  scene.add(candy);
+}
 function drawPath() {
   var vertices = path.getSpacedPoints(5);
 
@@ -427,15 +459,4 @@ floor.receiveShadow = true;
 floor.position.y = -2;
 scene.add(floor);
 
-/*
-meshFloor = new THREE.Mesh(
-	new THREE.PlaneGeometry(40,20, 10,10),
-	new THREE.MeshPhongMaterial({color:0xffffff, wireframe:false})
-);
-meshFloor.rotation.x -= Math.PI / 2;
-meshFloor.receiveShadow = true;
-	meshFloor.position.y = -2;
-scene.add(meshFloor);
-
-*/
 }
