@@ -253,7 +253,7 @@ function textureFloor(){
 var floorTexture = new THREE.ImageUtils.loadTexture( 'textura/ti.jpg' ); //256x256
 floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
 floorTexture.repeat.set( 10, 10 );
-var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+var floorMaterial = new THREE.MeshPhongMaterial( { map: floorTexture, side: THREE.DoubleSide } );
 var floorGeometry = new THREE.PlaneGeometry(40, 20, 10, 10);
 var floor = new THREE.Mesh(floorGeometry, floorMaterial);
 floor.rotation.x -= Math.PI / 2;
