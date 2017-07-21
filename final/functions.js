@@ -1,4 +1,4 @@
-var scene, camera, renderer, mesh;
+var scene, camera1, camera3, renderer, mesh;
 var meshFloor, ambientLight, light, personagem;
 var angle = 0;
 var position = 0;
@@ -16,15 +16,24 @@ var animationClip, mixer;
 var clock = new THREE.Clock();
 var stats = new Stats();
 
+// camera mode
+var cameraMode = 3;
+
+var xz = false; // true == x, false == z
+
 init();
 //animate();
 
 function init(){
     //cena e camera
 	scene = new THREE.Scene();
-	camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 10, -10);
-    camera.lookAt(new THREE.Vector3(0,2,0));
+	camera3 = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
+  camera3.position.set(0, 12, -10);
+  camera3.lookAt(new THREE.Vector3(0,2,0));
+
+  camera1 = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 3, 1000);
+  camera1.position.set(0, 2, 0);
+  camera1.lookAt(new THREE.Vector3(0,2,0));
 
     //plano no chao
 		textureFloor();
@@ -65,32 +74,87 @@ function init(){
     //controle do personagem
     document.addEventListener("keydown", Keyboard, false);
     //document.addEventListener("keyup", Keyboard, true);
-    function Keyboard(event){
+    function Keyboard(event) {
         var speedPers = 0.2;
-        if(event.keyCode == 37) {
-          mixer.clipAction('Idle').stop();
-          mixer.clipAction('Walk').play();
-          personagem.rotation.y = THREE.Math.degToRad( 90 );
-          personagem.position.x += speedPers;
+
+        if(event.keyCode == 67) {
+          if(cameraMode == 3)
+            cameraMode = 1;
+          else
+            cameraMode = 3;
         }
-        else if(event.keyCode == 39) {
-          mixer.clipAction('Idle').stop();
-          mixer.clipAction('Walk').play();
-          personagem.rotation.y = THREE.Math.degToRad( 270 );
+
+        if(cameraMode == 3) {
+          if(event.keyCode == 37) {
+            mixer.clipAction('Idle').stop();
+            mixer.clipAction('Walk').play();
+            personagem.rotation.y = THREE.Math.degToRad( 90 );
+            personagem.position.x += speedPers;
+          }
+          else if(event.keyCode == 39) {
+            mixer.clipAction('Idle').stop();
+            mixer.clipAction('Walk').play();
+            personagem.rotation.y = THREE.Math.degToRad( 270 );
             personagem.position.x -= speedPers;
-        }
-        else if(event.keyCode == 40) {
-          mixer.clipAction('Idle').stop();
-          mixer.clipAction('Walk').play();
-          personagem.rotation.y = THREE.Math.degToRad( 180 );
+          }
+          else if(event.keyCode == 40) {
+            mixer.clipAction('Idle').stop();
+            mixer.clipAction('Walk').play();
+            personagem.rotation.y = THREE.Math.degToRad( 180 );
             personagem.position.z -= speedPers;
-        }
-        else if(event.keyCode == 38) {
-          mixer.clipAction('Idle').stop();
-          mixer.clipAction('Walk').play();
-          personagem.rotation.y = THREE.Math.degToRad( 0 );
+          }
+          else if(event.keyCode == 38) {
+            mixer.clipAction('Idle').stop();
+            mixer.clipAction('Walk').play();
+            personagem.rotation.y = THREE.Math.degToRad( 0 );
             personagem.position.z += speedPers;
+          }  
         }
+        else {
+          if(event.keyCode == 37) {
+            //mixer.clipAction('Idle').stop();
+            //mixer.clipAction('Walk').play();
+            personagem.rotation.y += THREE.Math.degToRad( 90 );
+            camera1.rotation.y += THREE.Math.degToRad( 90 );
+            if(xz)
+              xz = false;
+            else
+              xz = true;
+          }
+          else if(event.keyCode == 39) {
+            //mixer.clipAction('Idle').stop();
+            //mixer.clipAction('Walk').play();
+            personagem.rotation.y -= THREE.Math.degToRad( 90 );
+            camera1.rotation.y -= THREE.Math.degToRad( 90 );
+            if(xz)
+              xz = false;
+            else
+              xz = true;
+          }
+          else if(event.keyCode == 40) {
+
+            if(xz) { 
+              camera1.position.x -= speedPers;
+              personagem.position.x -= speedPers;
+            }
+            else { 
+              camera1.position.z -= speedPers;
+              personagem.position.z -= speedPers;
+            }
+          }
+          else if(event.keyCode == 38) {
+
+            if(xz) { 
+              camera1.position.x += speedPers;
+              personagem.position.x += speedPers;
+            }
+            else { 
+              camera1.position.z += speedPers;
+              personagem.position.z += speedPers;
+            }
+          }  
+        }
+        
     }
 
     var down = false;
@@ -129,7 +193,11 @@ function addModel(geometry, materials){
 
 // render
 function render() {
-  renderer.render(scene, camera);
+
+  if(cameraMode == 3)
+    renderer.render(scene, camera3);
+  else
+    renderer.render(scene, camera1);
 
   move();
 
