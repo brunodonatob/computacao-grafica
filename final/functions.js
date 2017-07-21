@@ -37,28 +37,28 @@ init();
 function init(){
     //cena e camera
 
-	scene = new THREE.Scene();
-	camera3 = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
+  scene = new THREE.Scene();
+  camera3 = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
   camera3.position.set(0, 12, -10);
   camera3.lookAt(new THREE.Vector3(0,2,0));
 
   camera1 = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 3, 1000);
-  camera1.position.set(0, 1.5, 0);
+  camera1.position.set(0, 2, 0);
   camera1.lookAt(new THREE.Vector3(0,1,1));
 
     //plano no chao
-		textureFloor();
+    textureFloor();
     //luz ambiente
-	ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+  ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
   ambientLight.name = "ambientLight";
 
-	//luz do personagem
-	light = new THREE.PointLight(0xffffff, 2, 10);
-	light.position.set(0, 2, 3);
-	light.castShadow = true;
-	light.shadow.camera.near = 0.1;
-	light.shadow.camera.far = 25;
-	scene.add(light);
+  //luz do personagem
+  light = new THREE.PointLight(0xffffff, 2, 10);
+  light.position.set(0, 2, 3);
+  light.castShadow = true;
+  light.shadow.camera.near = 0.1;
+  light.shadow.camera.far = 25;
+  scene.add(light);
 
     // render
     renderer = new THREE.WebGLRenderer({
@@ -85,33 +85,33 @@ function init(){
       });
     });
 
-		//candy
-	mtlLoaderObjeto2 = new THREE.MTLLoader();
+    //candy
+  mtlLoaderObjeto2 = new THREE.MTLLoader();
   mtlLoaderObjeto2.setPath('obj/candy/');
   mtlLoaderObjeto2.load('CandyCane.mtl', function(materials) {
-		materials.preload();
+    materials.preload();
     var objeto2 = new THREE.OBJLoader();
     objeto2.setMaterials(materials);
     objeto2.setPath('obj/candy/');
     objeto2.load('CandyCane.obj', function(object) {
-	    object.scale.set(2,2,2);
+      //object.rotation.x =  THREE.Math.degToRad(90);
+      object.scale.set(2,2,2);
+      object.name = "candy";
+      if(Math.random() * 10 > 5)
+        randomSignal1 = 1;
+      else
+        randomSignal1 = -1;
 
-    	object.name = "candy";
-			if(Math.random() * 10 > 5)
-				randomSignal1 = 1;
-			else
-				randomSignal1 = -1;
+      if(Math.random() * 10 > 5)
+        randomSignal3 = 1;
+      else
+        randomSignal3 = -1;
 
-			if(Math.random() * 10 > 5)
-				randomSignal3 = 1;
-			else
-				randomSignal3 = -1;
+      randomSignal2 = Math.floor(Math.random() * 8) * randomSignal1;
+      randomSignal4 = Math.floor(Math.random() * 8) * randomSignal3;
+      object.position.set(randomSignal4, 0, randomSignal2);
 
-			randomSignal2 = Math.floor(Math.random() * 8) * randomSignal1;
-			randomSignal4 = Math.floor(Math.random() * 8) * randomSignal3;
-			object.position.set(randomSignal4, 0, randomSignal2);
-
-			candy = object;
+      candy = object;
     });
   });
 
@@ -119,7 +119,7 @@ function init(){
     //personagem
     loader = new THREE.JSONLoader();
     loader.load('obj/Charmander.json', addModel);
-		//lanterna
+    //lanterna
     var mtlLoaderObjeto1 = new THREE.MTLLoader();
     mtlLoaderObjeto1.setPath('obj/');
     mtlLoaderObjeto1.load('flame1.mtl', function(materials) {
@@ -150,8 +150,8 @@ function init(){
 
   //lanterna
   setTimeout(function(){ putObject2();}, 15000)
-	//aparecer doce
-	setTimeout(function(){ adicionarElementoSurpresa();}, 45000) //aparece o doce aos 45 segundos
+  //aparecer doce
+  setTimeout(function(){ adicionarElementoSurpresa();}, 45000) //aparece o doce aos 45 segundos
 
 
     //Orbit control
@@ -160,7 +160,7 @@ function init(){
     //controls.dampingFactor = 0.25;
     //controls.enableZoom = true;
 
-	//controle do personagem
+  //controle do personagem
     document.addEventListener("keydown", Keyboard, false);
     //document.addEventListener("keyup", Keyboard, true);
     function Keyboard(event) {
@@ -173,14 +173,13 @@ function init(){
             cameraMode = 3;
         }
 
-        // CAMERA EM TERCEIRA PESSOA
         if(cameraMode == 3) {
           if(event.keyCode == 37) {
             mixer.clipAction('Idle').stop();
             mixer.clipAction('Walk').play();
             personagem.rotation.y = THREE.Math.degToRad( 90 );
             personagem.position.x += speedPers;
-			light.rotation.y = THREE.Math.degToRad( 90 );
+      light.rotation.y = THREE.Math.degToRad( 90 );
             light.position.x += speedPers;
           }
           else if(event.keyCode == 39) {
@@ -188,7 +187,7 @@ function init(){
             mixer.clipAction('Walk').play();
             personagem.rotation.y = THREE.Math.degToRad( 270 );
             personagem.position.x -= speedPers;
-			light.rotation.y = THREE.Math.degToRad( 270 );
+      light.rotation.y = THREE.Math.degToRad( 270 );
             light.position.x -= speedPers;
           }
           else if(event.keyCode == 40) {
@@ -196,7 +195,7 @@ function init(){
             mixer.clipAction('Walk').play();
             personagem.rotation.y = THREE.Math.degToRad( 180 );
             personagem.position.z -= speedPers;
-  		    light.rotation.y = THREE.Math.degToRad( 180 );
+          light.rotation.y = THREE.Math.degToRad( 180 );
             light.position.z -= speedPers;
           }
           else if(event.keyCode == 38) {
@@ -204,37 +203,57 @@ function init(){
             mixer.clipAction('Walk').play();
             personagem.rotation.y = THREE.Math.degToRad( 0 );
             personagem.position.z += speedPers;
-			light.rotation.y = THREE.Math.degToRad( 0 );
+      light.rotation.y = THREE.Math.degToRad( 0 );
             light.position.z += speedPers;
           }
         }
-        // CAMERA EM PRIMEIRA PESSOA
         else {
           if(event.keyCode == 37) {
             //mixer.clipAction('Idle').stop();
             //mixer.clipAction('Walk').play();
-            personagem.position.x += speedPers;
-            camera1.position.x += speedPers;
-            light.position.x += speedPers;
+            personagem.rotation.y += THREE.Math.degToRad( 90 );
+            camera1.rotation.y += THREE.Math.degToRad( 90 );
+            if(xz)
+              xz = false;
+            else
+              xz = true;
           }
           else if(event.keyCode == 39) {
             //mixer.clipAction('Idle').stop();
             //mixer.clipAction('Walk').play();
-            personagem.position.x -= speedPers;
-            camera1.position.x -= speedPers;
-            light.position.x -= speedPers;
+            personagem.rotation.y -= THREE.Math.degToRad( 90 );
+            camera1.rotation.y -= THREE.Math.degToRad( 90 );
+
+            if(xz)
+              xz = false;
+            else
+              xz = true;
           }
           else if(event.keyCode == 40) {
 
-            camera1.position.z -= speedPers;
-            personagem.position.z -= speedPers;
-    			  light.position.z -= speedPers;
+            if(xz) {
+              camera1.position.x -= speedPers;
+              personagem.position.x -= speedPers;
+        light.position.x -= speedPers;
+            }
+            else {
+              camera1.position.z -= speedPers;
+              personagem.position.z -= speedPers;
+              light.position.z -= speedPers;
+            }
           }
           else if(event.keyCode == 38) {
 
-            camera1.position.z += speedPers;
-            personagem.position.z += speedPers;
-            light.position.z += speedPers;
+            if(xz) {
+              camera1.position.x += speedPers;
+              personagem.position.x += speedPers;
+              light.position.x += speedPers;
+            }
+            else {
+              camera1.position.z += speedPers;
+              personagem.position.z += speedPers;
+              light.position.z += speedPers;
+            }
           }
         }
 
@@ -255,38 +274,38 @@ function init(){
         }
         down = false;
     }, false);
-		contador();
+    contador();
 
 }
 
 function contador() {
-	timedCount();
-	var t = 0;
+  timedCount();
+  var t = 0;
 
-	function timedCount() {
-		var l = 0;
-		if(c+1 == 0){ //1 min para pegar os objetos
-			l = document.getElementById("contador");
-			if(pokebolas > 0 && pokebolas < 5)
-				l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! Treine mais!";
-			else if(pokebolas >= 5 && pokebolas < 10)
-				l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! Showw";
-			else if(pokebolas >= 10)
-				l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! MESTRE POKEMON?!";
-				else {
-					l.innerHTML = "TEMPO ESGOTADO! 0 pokébolas capturadas! Poxa :( ";
-				}
+  function timedCount() {
+    var l = 0;
+    if(c+1 == 0){ //1 min para pegar os objetos
+      l = document.getElementById("contador");
+      if(pokebolas > 0 && pokebolas < 5)
+        l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! Treine mais!";
+      else if(pokebolas >= 5 && pokebolas < 10)
+        l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! Showw";
+      else if(pokebolas >= 10)
+        l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! MESTRE POKEMON?!";
+        else {
+          l.innerHTML = "TEMPO ESGOTADO! 0 pokébolas capturadas! Poxa :( ";
+        }
 
 
-			stopCount();
-			alert('O tempo esgotou! Pressione F5 para jogar novamente.');
-			cancelAnimationFrame(id);
-		}else{
-			l = document.getElementById("contador");
-			l.innerHTML = c + " s";
-			c--;
-			t = setTimeout(function(){ timedCount() }, 1000);
-		}
+      stopCount();
+      alert('O tempo esgotou! Pressione F5 para jogar novamente.');
+      cancelAnimationFrame(id);
+    }else{
+      l = document.getElementById("contador");
+      l.innerHTML = c + " s";
+      c--;
+      t = setTimeout(function(){ timedCount() }, 1000);
+    }
   }
 
   function stopCount() {
@@ -327,7 +346,7 @@ function render() {
       personagem.position.x < mesh.position.x + 0.5 &&
       personagem.position.z > mesh.position.z - 0.5 &&
       personagem.position.z < mesh.position.z + 0.5) {
-		pokebolas++;
+    pokebolas++;
     removeEntity(mesh);
     putObject();
   }
@@ -339,13 +358,15 @@ function render() {
         removeEntity(lamp);
         scene.add(ambientLight);
         setTimeout(function(){ removeEntity(ambientLight) }, 5000);
-  }else if(personagem.position.x > candy.position.x - 0.5 &&
-      personagem.position.x < candy.position.x + 0.5 &&
-      personagem.position.z > candy.position.z - 0.5 &&
-      personagem.position.z < candy.position.z + 0.5) {
-				pokebolas = pokebolas + 5;
+  }
+   if(personagem.position.x > candy.position.x - 0.05 &&
+      personagem.position.x < candy.position.x + 0.05 &&
+      personagem.position.z > candy.position.z - 0.05 &&
+      personagem.position.z < candy.position.z + 0.05) {
         removeEntity(candy);
-    		// alert('removi doce!');
+        pokebolas = pokebolas + 5;
+        //alert(pokebolas);
+        // alert('removi doce!');
   }
 }
 
@@ -395,8 +416,8 @@ function putObject2() {
 }
 
 function adicionarElementoSurpresa() {
-	scene.add(candy);
-	}
+  scene.add(candy);
+  }
 function drawPath() {
   var vertices = path.getSpacedPoints(5);
 
