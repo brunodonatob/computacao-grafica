@@ -36,7 +36,7 @@ function init(){
 
   camera1 = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 3, 1000);
   camera1.position.set(0, 2, 0);
-  camera1.lookAt(new THREE.Vector3(0,2,0));
+  camera1.lookAt(new THREE.Vector3(0,1,1));
 
     //plano no chao
 		textureFloor();
@@ -46,7 +46,7 @@ function init(){
 
 	//luz do personagem
 	light = new THREE.PointLight(0xffffff, 2, 10);
-	light.position.set(0, 3, -1);
+	light.position.set(0, 2, 3);
 	light.castShadow = true;
 	light.shadow.camera.near = 0.1;
 	light.shadow.camera.far = 25;
@@ -186,7 +186,7 @@ function init(){
             mixer.clipAction('Walk').stop();
         }
         else{
-            alert('Omnibox. Ignore it.');
+            
         }
         down = false;
     }, false);
@@ -278,17 +278,33 @@ function putObject() {
     shading: THREE.FlatShading
   });
   // geometry
-  var geometry = new THREE.SphereGeometry(0.5, 50, 50, 0, Math.PI * 2, 0, Math.PI * 2);
+  //var geometry = new THREE.SphereGeometry(0.5, 50, 50, 0, Math.PI * 2, 0, Math.PI * 2);
   // mesh
-  mesh = new THREE.Mesh(geometry, material);
-  mesh.name = "bola";
-  scene.add(mesh);
+  //mesh = new THREE.Mesh(geometry, material);
+  //mesh.name = "bola";
+  //scene.add(mesh);
+
+  //mtl = textura e cor
+  var mtlLoader = new THREE.MTLLoader();
+  mtlLoader.setPath('obj/pkb/');
+  mtlLoader.load('pokeball.mtl', function(materials) {
+    materials.preload();
+    var objLoader = new THREE.OBJLoader();
+    objLoader.setMaterials(materials);
+    objLoader.setPath('obj/pkb/');
+    objLoader.load('pokeball.obj', function(object) {
+      object.scale.set(1/4,1/4,1/4);
+      scene.add(object);
+      mesh = object;
+      mesh.name = "bola";
+    });
+  });
 
   var randomSignal;
   if(Math.random() * 10 > 5)
-    randomSignal = 2;
+    randomSignal = 1;
   else
-    randomSignal = -2;
+    randomSignal = -1;
 
   //mesh.position.set(Math.random() * 10 * randomSignal, 0, Math.random() * 10 * randomSignal);
   //--------------- CAMINHO EM UM CURVA DE BEZIER QUE O OBJETO SE MOVIMENTA ----------
