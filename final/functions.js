@@ -95,7 +95,7 @@ function init(){
     objeto2.setPath('obj/candy/');
     objeto2.load('CandyCane.obj', function(object) {
 	    object.scale.set(2,2,2);
-			
+
     	object.name = "candy";
 			if(Math.random() * 10 > 5)
 				randomSignal1 = 1;
@@ -284,14 +284,19 @@ function contador() {
 
 	function timedCount() {
 		var l = 0;
-		if(c == 0){ //1 min para pegar os objetos
+		if(c+1 == 0){ //1 min para pegar os objetos
 			l = document.getElementById("contador");
 			if(pokebolas > 0 && pokebolas < 5)
 				l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! Treine mais!";
 			else if(pokebolas >= 5 && pokebolas < 10)
 				l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! Showw";
-			else
+			else if(pokebolas >= 10)
 				l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! MESTRE POKEMON?!";
+				else {
+					l.innerHTML = "TEMPO ESGOTADO! 0 pokébolas capturadas! Poxa :( ";
+				}
+
+
 			stopCount();
 			alert('O tempo esgotou! Pressione F5 para jogar novamente.');
 			cancelAnimationFrame(id);
