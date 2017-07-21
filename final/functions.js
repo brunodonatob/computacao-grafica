@@ -1,4 +1,4 @@
-var scene, camera1, camera3, renderer, mesh;
+var scene, camera1, camera3, renderer, mesh, lamp;
 var meshFloor, ambientLight, light, personagem;
 var angle = 0;
 var position = 0;
@@ -65,7 +65,7 @@ function init(){
     loader.load('obj/Charmander.json', addModel);
 
 	//lanterna
-
+	putObject2();
 
     // objeto a ser pego
     putObject();
@@ -186,7 +186,7 @@ function init(){
             mixer.clipAction('Walk').stop();
         }
         else{
-            
+
         }
         down = false;
     }, false);
@@ -258,6 +258,14 @@ function render() {
 				pokebolas++;
     removeEntity(mesh);
     putObject();
+  }
+  if(personagem.position.x > lamp.position.x - 0.5 &&
+      personagem.position.x < lamp.position.x + 0.5 &&
+      personagem.position.z > lamp.position.z - 0.5 &&
+      personagem.position.z < lamp.position.z + 0.5) {
+        removeEntity(lamp);
+        scene.add(ambientLight);
+        setTimeout(function(){ removeEntity(ambientLight) }, 5000);
   }
 }
 
@@ -331,6 +339,27 @@ function putObject() {
   previousAngle = getAngle( position );
   previousPoint = path.getPointAt( position );
   //-------------------- FIM DO OBJETO A SER PEGO--------------------------
+}
+
+function putObject2() {
+  var mtlLoaderObjeto1 = new THREE.MTLLoader();
+  mtlLoaderObjeto1.setPath('obj/');
+  mtlLoaderObjeto1.load('flame1.mtl', function(materials) {
+    materials.preload();
+    var objeto1 = new THREE.OBJLoader();
+    objeto1.setMaterials(materials);
+    objeto1.setPath('obj/');
+    objeto1.load('flame1.obj', function(object) {
+      object.scale.set(0.4,0.4,0.4);
+	  object.name = "lamp";
+
+	  var randomSignal2 = Math.floor(Math.random() * 8);
+	  var randomSignal4 = Math.floor(Math.random() * 8);
+	  object.position.set(randomSignal4, 0, randomSignal2);
+	  var lamp = new THREE.SkinnedMesh(object, materials);
+      scene.add(object);
+    });
+  });
 }
 
 function drawPath() {
