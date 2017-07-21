@@ -2,7 +2,8 @@ var scene, camera, renderer, mesh;
 var meshFloor, ambientLight, light, personagem;
 var angle = 0;
 var position = 0;
-var c = 60; //TIMER DO CONTADOR
+var c = 60; //TIMER DO CONTADOR. Sugerido: 60s
+var pokebolas = 0;
 
 // direction vector for movement
 var direction = new THREE.Vector3(1, 0, 0);
@@ -30,7 +31,6 @@ function init(){
 
     //plano no chao
 		textureFloor();
-		contador();
     //luz ambiente
 	ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
 	scene.add(ambientLight);
@@ -111,6 +111,8 @@ function init(){
         }
         down = false;
     }, false);
+		contador();
+
 }
 
 function contador(){
@@ -120,13 +122,20 @@ function contador(){
 	function timedCount() {
 		var l = 0;
 		if(c == 0){ //1 min para pegar os objetos
+			l = document.getElementById("contador");
+			if(pokebolas > 0 && pokebolas < 5)
+				l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! Treine mais!";
+			else if(pokebolas >= 5 && pokebolas < 10)
+				l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! Showw";
+			else
+				l.innerHTML = "TEMPO ESGOTADO! "+pokebolas+" pokébolas capturadas! MESTRE POKEMON?!";
 			stopCount();
-			alert('O tempo esgotou! Pressione f5 para jogar novamente.');
+			alert('O tempo esgotou! Pressione F5 para jogar novamente.');
 			cancelAnimationFrame(id);
 		}else{
 			l = document.getElementById("contador");
-			c--;
 			l.innerHTML = c + " s";
+			c--;
 			t = setTimeout(function(){ timedCount() }, 1000);
 		}
 }
@@ -163,6 +172,7 @@ function render() {
       personagem.position.x < mesh.position.x + 0.5 &&
       personagem.position.z > mesh.position.z - 0.5 &&
       personagem.position.z < mesh.position.z + 0.5) {
+				pokebolas++;
     removeEntity(mesh);
     putObject();
   }
