@@ -2,11 +2,13 @@ var scene, camera, renderer, mesh;
 var meshFloor, ambientLight, light, personagem;
 var angle = 0;
 var position = 0;
+var c = 0;
 
 // direction vector for movement
 var direction = new THREE.Vector3(1, 0, 0);
 var up = new THREE.Vector3(0, 0, 1);
 var axis = new THREE.Vector3();
+var id;
 
 // scalar to simulate speed
 var speed = 100;
@@ -28,6 +30,7 @@ function init(){
 
     //plano no chao
 		textureFloor();
+		contador();
     //luz ambiente
 	ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
 	scene.add(ambientLight);
@@ -110,6 +113,29 @@ function init(){
     }, false);
 }
 
+function contador(){
+	timedCount();
+	var t = 0;
+
+	function timedCount() {
+		var l = 0;
+		if((c-1) == 60){ //1 min para pegar os objetos -- c-1 pra mostrar no contador o tempo correto
+			stopCount();
+			alert('O tempo esgotou! Pressione f5 para jogar novamente.');
+			cancelAnimationFrame(id);
+		}else{
+			l = document.getElementById("contador");
+			l.innerHTML = c + " s";
+			c++;
+			t = setTimeout(function(){ timedCount() }, 1000);
+		}
+}
+
+function stopCount() {
+    clearTimeout(t);
+}
+}
+
 function addModel(geometry, materials){
   materials.forEach(function (mat){
     mat.skinning = true;});
@@ -144,7 +170,7 @@ function render() {
 
 // animate
 function animate() {
-  requestAnimationFrame(animate);
+  id = requestAnimationFrame(animate);
   mixer.update( clock.getDelta() );
   stats.update();
   render();
