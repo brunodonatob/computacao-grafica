@@ -94,8 +94,8 @@ function init(){
     objeto2.setMaterials(materials);
     objeto2.setPath('obj/candy/');
     objeto2.load('CandyCane.obj', function(object) {
-	    object.scale.set(4,4,4);
-			object.rotation.x = 100;
+	    object.scale.set(2,2,2);
+			
     	object.name = "candy";
 			if(Math.random() * 10 > 5)
 				randomSignal1 = 1;
@@ -151,7 +151,7 @@ function init(){
   //lanterna
   setTimeout(function(){ putObject2();}, 15000)
 	//aparecer doce
-	setTimeout(function(){ adicionarElementoSurpresa();}, 2000) //aparece o doce aos 45 segundos
+	setTimeout(function(){ adicionarElementoSurpresa();}, 45000) //aparece o doce aos 45 segundos
 
 
     //Orbit control
