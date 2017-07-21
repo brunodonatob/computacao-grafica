@@ -43,3 +43,14 @@ O objetivo do jogo é capturar todos os objetos que aparecem na cena dentro do t
 * Posições de câmera: Terceira pessoa e primeira pessoa.
 * Interação pelo teclado para controlar o personagem principal.
 * Objeto articulado: o personagem principal. 
+
+## ATIVIDADE FINAL
+
+O objetivo do jogo é o Pokémon (Charmander) conseguir capturar o máximo de pokébolas no tempo de 60 segundos em uma caverna escura! Você conseguirá se tornar um mestre pokémon?
+Para andar com o Charmander aperte os botões do seu teclado (​up) para cima, (​down) para baixo, (​left​) para esquerda e (​right​) para direita.
+Para mudar de câmera (1a ou 3a pessoa) aperte a tecla ​ C.
+Fique atento para os itens:
+* Pokébola: 1 ponto;
+* Candy Pokémon: 5 pontos;
+* Fogo (lanterna): 5 segundos na claridade;
+Ao final dos 60 segundo é mostrado a sua pontuação. Para jogar novamente, aperte F5 no seu teclado. Divirta-se!
