@@ -27,15 +27,7 @@ function init(){
     camera.lookAt(new THREE.Vector3(0,2,0));
 
     //plano no chao
-	meshFloor = new THREE.Mesh(
-		new THREE.PlaneGeometry(40,20, 10,10),
-		new THREE.MeshPhongMaterial({color:0xffffff, wireframe:false})
-	);
-	meshFloor.rotation.x -= Math.PI / 2;
-	meshFloor.receiveShadow = true;
-    meshFloor.position.y = -2;
-	scene.add(meshFloor);
-
+		textureFloor();
     //luz ambiente
 	ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
 	scene.add(ambientLight);
@@ -59,7 +51,7 @@ function init(){
     //personagem
     loader = new THREE.JSONLoader();
     loader.load('obj/Charmander.json', addModel);
-    
+
     // objeto a ser pego
     putObject();
 
@@ -133,7 +125,7 @@ function addModel(geometry, materials){
   mixer.timeScale = 35;
 
   animate();
-} 
+}
 
 // render
 function render() {
@@ -141,7 +133,7 @@ function render() {
 
   move();
 
-  if(personagem.position.x > mesh.position.x - 0.5 && 
+  if(personagem.position.x > mesh.position.x - 0.5 &&
       personagem.position.x < mesh.position.x + 0.5 &&
       personagem.position.z > mesh.position.z - 0.5 &&
       personagem.position.z < mesh.position.z + 0.5) {
@@ -255,4 +247,29 @@ function getAngle( position ){
 function removeEntity(object) {
     var selectedObject = scene.getObjectByName(object.name);
     scene.remove( selectedObject );
+}
+
+function textureFloor(){
+var floorTexture = new THREE.ImageUtils.loadTexture( 'textura/ti.jpg' ); //256x256
+floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+floorTexture.repeat.set( 10, 10 );
+var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+var floorGeometry = new THREE.PlaneGeometry(40, 20, 10, 10);
+var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+floor.rotation.x -= Math.PI / 2;
+floor.receiveShadow = true;
+floor.position.y = -2;
+scene.add(floor);
+
+/*
+meshFloor = new THREE.Mesh(
+	new THREE.PlaneGeometry(40,20, 10,10),
+	new THREE.MeshPhongMaterial({color:0xffffff, wireframe:false})
+);
+meshFloor.rotation.x -= Math.PI / 2;
+meshFloor.receiveShadow = true;
+	meshFloor.position.y = -2;
+scene.add(meshFloor);
+
+*/
 }
