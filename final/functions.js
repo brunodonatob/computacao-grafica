@@ -71,8 +71,13 @@ function init(){
         object.scale.set(1/4,1/4,1/4);
         mesh = object;
         mesh.name = "bola";
+
+        // objeto a ser pego
+        putObject();
       });
     });
+
+
 
     //personagem
     loader = new THREE.JSONLoader();
@@ -108,11 +113,9 @@ function init(){
       });
     });
 
-	//lanterna
+  //lanterna
   setTimeout(function(){ putObject2();}, 15000)
 
-    // objeto a ser pego
-    putObject();
 
     //Orbit control
     //controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -238,7 +241,7 @@ function init(){
 
 }
 
-function contador(){
+function contador() {
 	timedCount();
 	var t = 0;
 
@@ -261,11 +264,11 @@ function contador(){
 			c--;
 			t = setTimeout(function(){ timedCount() }, 1000);
 		}
-}
+  }
 
-function stopCount() {
-    clearTimeout(t);
-}
+  function stopCount() {
+      clearTimeout(t);
+  }
 }
 
 function addModel(geometry, materials){
@@ -294,6 +297,8 @@ function render() {
     renderer.render(scene, camera1);
 
   move();
+
+  mesh = scene.getObjectByName("bola");
 
   if(personagem.position.x > mesh.position.x - 0.5 &&
       personagem.position.x < mesh.position.x + 0.5 &&
@@ -325,11 +330,6 @@ function animate() {
 // ---------------------------- funcoes para fazer o objeto a ser pego ---------
 function putObject() {
   // ------------- OBJETO A SER PEGO ------------------
-  // material
-  var material = new THREE.MeshPhongMaterial({
-    color: 0x228B22,
-    shading: THREE.FlatShading
-  });
   
   var randomSignal;
   if(Math.random() * 10 > 5)
@@ -340,17 +340,17 @@ function putObject() {
   //--------------- CAMINHO EM UM CURVA DE BEZIER QUE O OBJETO SE MOVIMENTA ----------
   var a = Math.random() * 10 * randomSignal;
   var b = Math.random() * 10 * randomSignal;
-  
 
+  mesh.position.set(a, 0, b);
+  
   scene.add(mesh);
 
-  //mesh.position.set(a, 0, b);
   // the path
   path = new THREE.CubicBezierCurve3(
       new THREE.Vector3(a, 0, b),
       new THREE.Vector3(a, 1, a * -1),
-      new THREE.Vector3(a * -1, 1, a),
-      new THREE.Vector3(b, 0, b)
+      new THREE.Vector3(b * -1, 1, b),
+      new THREE.Vector3(a, 0, b)
   );
 
   drawPath();
